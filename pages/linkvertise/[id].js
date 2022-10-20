@@ -9,12 +9,15 @@ import Stage_2 from '../../components/stage_2'
 
 export default function Stage1(props) {
     //define returnable div
+    const stageString = `NEXT_PUBLIC_STAGE_${props.stage}_TITLE`
+
+    console.log(process.env[stageString])
 
     if (props.state && props.state === "0x1") {
         return (
             <>
                 <Head>
-                    <title>{process.env.NEXT_PUBLIC_STAGE_1_TITLE}</title>
+                    <title>{process.env[`NEXT_PUBLIC_STAGE_${props.stage}_TITLE`]}</title>
                 </Head>
                 <div className="flex justify-center h-screen w-screen items-center flex-col">
                     <p className="text-white text-2xl font-bold">Sorry, we can&#39;t allow you here.</p>
@@ -30,7 +33,7 @@ export default function Stage1(props) {
         return (
             <>
                 <Head>
-                    <title>{process.env.NEXT_PUBLIC_STAGE_1_TITLE}</title>
+                    <title>{process.env[`NEXT_PUBLIC_STAGE_${props.stage}_TITLE`]}</title>
                 </Head>
                 <div className="flex justify-center h-screen w-screen items-center flex-col">
                     <p className="text-white text-2xl font-bold">Sorry, we can&#39;t allow you here.</p>
@@ -76,7 +79,8 @@ export async function getServerSideProps(context) {
             props: {
                 username: id,
                 tag,
-                state: "0x1"
+                state: "0x1",
+                stage
             }
         }
 
@@ -92,7 +96,7 @@ export async function getServerSideProps(context) {
         Here, we will check for if the user had already completed this step
     */
 
-    if (userData[`stage_${stage}`] && userData[`stage_${stage}`] != undefined) return { props: { username: id, tag, state: "0x2" } }
+    if (userData[`stage_${stage}`] && userData[`stage_${stage}`] != undefined) return { props: { username: id, tag, state: "0x2", stage } }
 
     let a = await writeToDatabase(`${id}.stage_${stage}`, true)
     // let a = true
