@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import { useEffect, useState } from 'react';
+import NextNProgress from 'nextjs-progressbar';
 
 function MyApp({ Component, pageProps }) {
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -9,6 +10,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <NextNProgress />
       {pageLoaded ? <Component {...pageProps} /> : null}
     </>
   )

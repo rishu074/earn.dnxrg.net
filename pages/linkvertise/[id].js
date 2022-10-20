@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { writeToDatabase, readDatabase, checkHash,  } from '../../helpers'
+import { writeToDatabase, readDatabase, checkHash, } from '../../helpers'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import Stage_1 from '../../components/stage_1'
+import Stage_2 from '../../components/stage_2'
+
 
 
 export default function Stage1(props) {
@@ -39,32 +42,27 @@ export default function Stage1(props) {
         )
     }
 
-    const handleVerificationSuccess = (token, ekey) => {
-        console.log(token, ekey)
+    if (props.stage && props.stage === '1') {
+        return (
+            <Stage_1 username={props.username} tag={props.tag} />
+        )
+    }
+
+    if (props.stage && props.stage === '2') {
+        return (
+            <Stage_2 username={props.username} tag={props.tag} />
+        )
     }
     return (
         <>
-            <Head>
-                <title>{process.env.NEXT_PUBLIC_STAGE_1_TITLE}</title>
-            </Head>
-            <div className="flex justify-center h-screen w-screen items-center flex-col ">
-                <p className="text-white text-2xl font-bold">Hello, {props.username}.</p>
-                <p className="p-2 pt-5 pb-5 text-xl ">Congo, you have made it till here. You are currently at the Stage-1 of Your way.</p>
-                <p className="text-white pb-5">Now you just jave to fill the captcha and move-on to your next step.</p>
-
-                <HCaptcha
-                    sitekey={process.env.NEXT_PUBLIC_H_SITEKEY}
-                    onVerify={(token, ekey) => handleVerificationSuccess(token, ekey)}
-                />
-            </div>
-
         </>
     )
 }
 
 export async function getServerSideProps(context) {
-    const { id, tag } = context.query
-    if (!id || !tag) return {
+    const { id, tag, stage } = context.query
+    // console.log(context.query)
+    if (!id || !tag || !stage) return {
         redirect: {
             permanent: false, destination: '/',
             status: 409
@@ -93,11 +91,12 @@ export async function getServerSideProps(context) {
     /*
         Here, we will check for if the user had already completed this step
     */
-   if(userData.stage_1) return { props: { username: id, tag, state: "0x2" } }
 
-    let a = await writeToDatabase(`${id}.stage_1`, false)
+    if (userData[`stage_${stage}`] && userData[`stage_${stage}`] != undefined) return { props: { username: id, tag, state: "0x2" } }
+
+    let a = await writeToDatabase(`${id}.stage_${stage}`, true)
     // let a = true
-    if(!a) {
+    if (!a) {
         return {
             redirect: {
                 permanent: false, destination: '/',
@@ -110,6 +109,7 @@ export async function getServerSideProps(context) {
         props: {
             username: id,
             tag,
+            stage
         }
     }
 } 

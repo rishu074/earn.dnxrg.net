@@ -44,7 +44,7 @@ export default async function status(req: NextApiRequest, res: NextApiResponse) 
     return res.status(200).json({
         "username": username.toString(),
         "expires_at": (Date.now()+parseInt(process.env.EXPIRES_IN)),
-        "url": `${process.env.APP_URL}/linkvertise/${username.toString()}?tag=${userHash}`
+        "url": `${process.env.APP_URL}/linkvertise/${username.toString()}?tag=${userHash}&stage=1`
     })
 
 }
