@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hcaptcha/react-hcaptcha": "^1.4.4",
     "autoprefixer": "^10.4.12",
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "eval": "^0.1.8",
     "next": "12.3.1",

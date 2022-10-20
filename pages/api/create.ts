@@ -1,4 +1,4 @@
-import {readDatabase, writeToDatabase, random, deleteFromDatabase} from '../../helpers'
+import {readDatabase, writeToDatabase, random, deleteFromDatabase, createHash} from '../../helpers'
 import type { NextApiRequest, NextApiResponse } from "next";
 
 
@@ -25,11 +25,12 @@ export default async function status(req: NextApiRequest, res: NextApiResponse) 
     if(a) {
         let b = deleteFromDatabase(username.toString())
         if(!b) return res.status(500).json({"error": "There was an error on the server and the request could not be completed. Error code: 0xDB01"})
-    } 
+    }
+    let dataString = random(32)
 
     let c = writeToDatabase(username.toString(), {
         "username": username.toString(),
-        "string": random(16),
+        "string": dataString,
         "created": Date.now(),
         "stage_1": false,
         "stage_2": false,
@@ -38,9 +39,12 @@ export default async function status(req: NextApiRequest, res: NextApiResponse) 
 
     if(!c) return res.status(500).json({"error": "There was an error on the server and the request could not be completed. Error code: 0xDB02"})
 
+    let userHash = await createHash(10, `${username.toString()}-${dataString}`)
+
     return res.status(200).json({
         "username": username.toString(),
-        "expires_at": Date.now()+process.env.EXPIRES_IN
+        "expires_at": (Date.now()+parseInt(process.env.EXPIRES_IN)),
+        "url": `${process.env.APP_URL}/linkvertise/${username.toString()}?tag=${userHash}`
     })
 
 }
