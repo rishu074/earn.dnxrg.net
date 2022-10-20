@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export default async function readDatabase(...key) {
+export default function readDatabase(...key) {
     var databaseFile = fs.readFileSync("./database.json")
     databaseFile = JSON.parse(databaseFile)
 
