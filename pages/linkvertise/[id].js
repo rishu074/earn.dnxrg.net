@@ -23,6 +23,22 @@ export default function Stage1(props) {
         )
     }
 
+    if (props.state && props.state === "0x2") {
+        return (
+            <>
+                <Head>
+                    <title>{process.env.NEXT_PUBLIC_STAGE_1_TITLE}</title>
+                </Head>
+                <div className="flex justify-center h-screen w-screen items-center flex-col">
+                    <p className="text-white text-2xl font-bold">Sorry, we can&#39;t allow you here.</p>
+                    <p className="p-2 text-gray-500">You already completed this step.</p>
+                    <p className="p-2 text-xl">If you missed something, please regen your link.</p>
+                </div>
+
+            </>
+        )
+    }
+
     const handleVerificationSuccess = (token, ekey) => {
         console.log(token, ekey)
     }
@@ -77,8 +93,18 @@ export async function getServerSideProps(context) {
     /*
         Here, we will check for if the user had already completed this step
     */
+   if(userData.stage_1) return { props: { username: id, tag, state: "0x2" } }
 
-    let a = await writeToDatabase(`${id}.stage_1`, true)
+    let a = await writeToDatabase(`${id}.stage_1`, false)
+    // let a = true
+    if(!a) {
+        return {
+            redirect: {
+                permanent: false, destination: '/',
+                status: 409
+            }
+        }
+    }
 
     return {
         props: {
