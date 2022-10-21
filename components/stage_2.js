@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { useState, useEffect } from 'react'
 
 
-export default function Stage_1(props) {
+export default function Stage_2(props) {
     const [counter, setCounter] = useState(parseInt(process.env.NEXT_PUBLIC_STAGE_2_TIMER))
     const router = useRouter();
 
@@ -16,7 +16,23 @@ export default function Stage_1(props) {
     }, [counter])
 
     const handleVerificationSuccess = async (token, ekey) => {
-        console.log(token, ekey)
+        // console.log(token, ekey)
+        let response;
+        try {
+            response = await axios.post('/api/stages/2', {
+                "username": props.username,
+                "tag": props.tag
+            }, {
+                headers: {
+                    "token": token
+                }
+            })
+        } catch(error) {
+            return router.replace("/")
+        }
+
+        const next_step = await response.data.next_step
+        return router.replace(next_step)
     }
 
 

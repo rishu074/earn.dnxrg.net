@@ -1,9 +1,9 @@
-import { readDatabase, writeToDatabase, random, deleteFromDatabase, createHash, checkHash } from '../../../helpers'
+import { readDatabase, writeToDatabase, random, deleteFromDatabase, createHash, checkHash, linkvertise } from '../../../helpers'
 import type { NextApiRequest, NextApiResponse } from "next";
 import hcaptcha from 'hcaptcha';
 
 
-export default async function StageOne(req: NextApiRequest, res: NextApiResponse) {
+export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse) {
     //Checks fot token and other stuff
     const token = req.headers["token"] || undefined
     const username = req.body.username || undefined
@@ -34,22 +34,24 @@ export default async function StageOne(req: NextApiRequest, res: NextApiResponse
     if (!userdata) return res.status(500).json({ "error": "Error code: 0xDB94" })
     // @ts-ignore: Unreachable code error
 
-    //check for stages
-    // @ts-ignore: Unreachable code error
-    if (!userdata.stage_1) return res.status(500).json({ "error": "0xUS06x" })
-    // @ts-ignore: Unreachable code error
-    if (userdata.stage_2) return res.status(500).json({ "error": "0xUS06y" })
-    // @ts-ignore: Unreachable code error
-    if (userdata.stage_final) return res.status(500).json({ "error": "0xUS06z" })
-
-
     //read the tag
     // @ts-ignore: Unreachable code error
     let bcrypt_response = await checkHash(`${userdata.username}-${userdata.string}`, tag)
     if (!bcrypt_response) return res.status(500).json({ "error": "0xBC78s" })
 
-    //the request seems to be genuine
-    //regenrate strings
+    //check for stages
+    // @ts-ignore: Unreachable code error
+    if (!userdata.stage_1) return res.status(500).json({ "error": "0xUS06x" })
+    // @ts-ignore: Unreachable code error
+    if (!userdata.stage_2) return res.status(500).json({ "error": "0xUS06y" })
+    // @ts-ignore: Unreachable code error
+    if (userdata.stage_final) return res.status(500).json({ "error": "0xUS06z" })
+    // if (!userdata.stage_1) return res.status(500).json({ "error": "0xUS06x" })
+
+    /*
+        Since, this is the seconds stage we'll generate a new link and tunnel it through linkvertise :)
+    */
+
     let newstring = random(32)
 
     let b = writeToDatabase(`${username}.string`, newstring)
@@ -59,12 +61,17 @@ export default async function StageOne(req: NextApiRequest, res: NextApiResponse
     //generate new url
     // @ts-ignore: Unreachable code error
     let newtag = await createHash(10, `${userdata.username}-${newstring}`)
+    // @ts-ignore: Unreachable code error
+    let newLink = `${process.env.APP_URL}/linkvertise/${userdata.username.toString()}?tag=${newtag}&stage=3`
+
+    //get the linkvertise Link
+    let lv = linkvertise(parseInt(process.env.LINKVERTISE_USERID), newLink)
 
     // @ts-ignore: Unreachable code error
     return res.status(200).json({
         "username": username,
         // @ts-ignore: Unreachable code error
-        "next_step": `${process.env.APP_URL}/linkvertise/${userdata.username.toString()}?tag=${newtag}&stage=2`
+        "next_step": lv
     })
 }
 
