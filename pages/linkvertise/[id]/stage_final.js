@@ -196,7 +196,7 @@ export default function Stage1(props) {
 
 export async function getServerSideProps(context) {
     const { id, tag } = context.query
-    console.log("stage_3", context.query)
+    // console.log("stage_3", context.query)
     if (!id || !tag) return {
         redirect: {
             permanent: false, destination: '/',
