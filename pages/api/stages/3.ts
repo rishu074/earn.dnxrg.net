@@ -40,6 +40,11 @@ export default async function StageThree(req: NextApiRequest, res: NextApiRespon
     let bcrypt_response = await checkHash(`${userdata.username}-${userdata.string}`, tag)
     if (!bcrypt_response) return res.status(500).json({ "error": "0xBC78s" })
 
+    //delete the user
+    // @ts-ignore: Unreachable code error
+    let po = deleteFromDatabase(userdata.username.toString())
+    if (!po) return res.status(500).json({ "error": "0xDELDB645x" })
+
     //check for stages
     // @ts-ignore: Unreachable code error
     if (!userdata.stage_1) return res.status(500).json({ "error": "0xUS06x" })
@@ -53,10 +58,7 @@ export default async function StageThree(req: NextApiRequest, res: NextApiRespon
         Now, the user is returned from linkvertise, we'll now give him the coins
     */
 
-    //delete the user
-    // @ts-ignore: Unreachable code error
-    let po = deleteFromDatabase(userdata.username.toString())
-    if (!po) return res.status(500).json({ "error": "0xDELDB645x" })
+    
 
     let response;
     try {

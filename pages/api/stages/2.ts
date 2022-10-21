@@ -62,7 +62,7 @@ export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse
     // @ts-ignore: Unreachable code error
     let newtag = await createHash(10, `${userdata.username}-${newstring}`)
     // @ts-ignore: Unreachable code error
-    let newLink = `${process.env.APP_URL}/linkvertise/${userdata.username.toString()}?tag=${newtag}&stage=3`
+    let newLink = `${process.env.APP_URL}/linkvertise/${userdata.username.toString()}/stage_final?tag=${newtag}`
 
     //get the linkvertise Link
     let lv = linkvertise(parseInt(process.env.LINKVERTISE_USERID), newLink)

@@ -64,7 +64,7 @@ export default async function StageOne(req: NextApiRequest, res: NextApiResponse
     return res.status(200).json({
         "username": username,
         // @ts-ignore: Unreachable code error
-        "next_step": `${process.env.APP_URL}/linkvertise/${userdata.username.toString()}?tag=${newtag}&stage=2`
+        "next_step": `${process.env.APP_URL}/linkvertise/${userdata.username.toString()}/stage_2?tag=${newtag}`
     })
 }
 
