@@ -34,3 +34,27 @@ app.prepare().then((err) => {
         console.log(`> Ready on http://${hostname}:${port}`)
     })
 })
+
+setInterval(() => {
+    var data = fs.readFileSync('./database.json')
+    data = JSON.parse(data)
+
+    if(data.length <= 0) return
+
+    for (const[key, value] of Object.entries(data)) {
+        let currentDate = Date.now()
+        let creationDate = value.created
+
+        if(creationDate != undefined) {
+            if(currentDate-creationDate > parseInt(process.env.EXPIRES_IN)*1000) {
+                debug(`${key} expired.`)
+                delete data[key]
+                fs.writeFileSync('./database.json', JSON.stringify(data, null, "\t"))
+            }
+        }
+    }
+}, 5000)
+
+function debug(msg) {
+    console.log("\x1b[43m[DEBUG] > " + msg + " \x1b[0m")
+}

@@ -4,10 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "div": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next build && node server.js"
   },
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^1.4.4",
