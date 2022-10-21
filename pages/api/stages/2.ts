@@ -74,7 +74,7 @@ export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse
     }
 
     //get the linkvertise Link
-    let lv = linkvertise(parseInt(process.env.LINKVERTISE_USERID), newLink)
+    let lv = linkvertise(parseInt(keysstring), newLink)
 
     // @ts-ignore: Unreachable code error
     return res.status(200).json({
