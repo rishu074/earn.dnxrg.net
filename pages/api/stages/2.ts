@@ -70,7 +70,11 @@ export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse
     let splitted = keysstring.split(" ")
     
     if(splitted.length > 1) {
-        keysstring = splitted[Math.round(Math.random() * splitted.length-1)]
+        keysstring = splitted[Math.round(Math.random() * (splitted.length-1))]
+    }
+    
+    if(!keysstring) {
+        keysstring = splitted[0]
     }
 
     //get the linkvertise Link
