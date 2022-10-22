@@ -14,6 +14,11 @@ export default async function status(req: NextApiRequest, res: NextApiResponse) 
     //the request have the essentials details
     // @ts-ignore: Unreachable code error
     if(token.toString() != process.env.API_TOKEN.toString()) return res.status(401).json({"error": "401 Unauthorized"})
+    
+    //check if the user is banned
+    // @ts-ignore: Unreachable code error
+    let bannedList = process.env.BANNED.split(",")
+    if(bannedList.indexOf(username.toString()) != -1) return res.status(403).json({"error": "this user is banned"})
 
 
     //request is now safe
