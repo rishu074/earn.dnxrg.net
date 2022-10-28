@@ -65,6 +65,7 @@ export default async function StageThree(req: NextApiRequest, res: NextApiRespon
 
         var options = {
             method: 'PATCH',
+            // @ts-ignore: Unreachable code error
             url: `https://dash.dnxrg.net/api/users/${userdata.username}/increment`,
             headers: {
               Accept: '*/*',
