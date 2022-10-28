@@ -1,7 +1,7 @@
 import { readDatabase, writeToDatabase, random, deleteFromDatabase, createHash, checkHash, linkvertise } from '../../../helpers'
 import type { NextApiRequest, NextApiResponse } from "next";
 import hcaptcha from 'hcaptcha';
-import axios from 'axios';
+import axios from 'axios'.default;
 
 
 export default async function StageThree(req: NextApiRequest, res: NextApiResponse) {
@@ -62,24 +62,27 @@ export default async function StageThree(req: NextApiRequest, res: NextApiRespon
 
     let response;
     try {
-        response = await axios.post(`${process.env.DASHBOARD_URL}/api/addcoins`, {
-            // @ts-ignore: Unreachable code error
-            id: userdata.username.toString(),
-            coins: parseInt(process.env.COINS)
-        }, {
+
+        var options = {
+            method: 'PATCH',
+            url: `https://dash.dnxrg.net/api/users/${userdata.username}/increment`,
             headers: {
-                "Authorization": `Bearer ${process.env.DASHBOARD_API}`,
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            }
-        })
+              Accept: '*/*',
+              Authorization: `Bearer ${process.env.DASHBOARD_API}`,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {credits: process.env.COINS}
+          };
+
+        
+        response = await axios.request(options)
     } catch (error) {
         if (error && error.response && error.response.status && error.response.status === 404) return res.status(404).json({ "errror": "username not found." })
 
         return res.status(500).json({ "error": "0xAPDSH0s" })
     }
 
-    if (await response.data && response.data.status != "success") return res.status(500).json({ "error": "0xDSHPI85" })
+    if (await response.data && response.status != 200) return res.status(500).json({ "error": "0xDSHPI85" })
 
     return res.status(200).json({
         // @ts-ignore: Unreachable code error
