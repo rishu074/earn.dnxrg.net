@@ -1,7 +1,7 @@
 import { readDatabase, writeToDatabase, random, deleteFromDatabase, createHash, checkHash, linkvertise } from '../../../helpers'
 import type { NextApiRequest, NextApiResponse } from "next";
 import hcaptcha from 'hcaptcha';
-import axios from 'axios'.default;
+import axios from 'axios';
 
 
 export default async function StageThree(req: NextApiRequest, res: NextApiResponse) {
