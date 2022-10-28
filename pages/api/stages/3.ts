@@ -83,13 +83,18 @@ export default async function StageThree(req: NextApiRequest, res: NextApiRespon
         return res.status(500).json({ "error": "0xAPDSH0s" })
     }
 
-    if (await response.data && response.status != 200) return res.status(500).json({ "error": "0xDSHPI85" })
+    if (await response.status != 200) return res.status(500).json({ "error": "0xDSHPI85" })
+    let responseData = await response.data
+
+    if(!responseData) return res.status(500).json({ "error": "0xLSdN7" })
 
     return res.status(200).json({
         // @ts-ignore: Unreachable code error
-        "username": userdata.username,
+        "username": responseData.name,
         "coins": parseInt(process.env.COINS),
-        "status": "done"
+        "status": "done",
+        // @ts-ignore: Unreachable code error
+        "total": parseInt(responseData.credits)
     })
 
 

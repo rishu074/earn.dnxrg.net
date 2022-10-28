@@ -11,6 +11,7 @@ export default function Stage1(props) {
     const [notFound, setNotFound] = useState(false);
     const [success, setSuccess] = useState(false);
     const [coinsGot, setCoinsGot] = useState(0)
+    const [totalCoins, settotalCoins] = useState(0)
     const [loading, setLoading] = useState(false);
     const router = useRouter()
 
@@ -111,6 +112,7 @@ export default function Stage1(props) {
 
         //here the coins are set
         setCoinsGot(response.data.coins)
+        settotalCoins(response.data.total)
         setSuccess(true)
     }
 
@@ -158,7 +160,8 @@ export default function Stage1(props) {
                 </Head>
                 <div className="flex justify-center h-screen w-screen items-center flex-col ">
                     <p className="p-2 pt-5 pb-5 text-xl ">Congrats, {props.username}</p>
-                    <p className="text-white pb-5">You got {coinsGot} coins in your wallet.</p>
+                    <p className="text-white pb-5">You got {coinsGot} credits in your wallet.</p>
+                    <p className="text-white pb-5">Total Balance: {totalCoins} credits</p>
 
                 </div>
             </>
