@@ -34,6 +34,17 @@ export default async function StageOne(req: NextApiRequest, res: NextApiResponse
     if (!userdata) return res.status(500).json({ "error": "Error code: 0xDB94" })
     // @ts-ignore: Unreachable code error
 
+    
+    
+    //read the tag
+    // @ts-ignore: Unreachable code error
+    let bcrypt_response = await checkHash(`${userdata.username}-${userdata.string}`, tag)
+    if (!bcrypt_response) return res.status(500).json({ "error": "0xBC78s" })
+
+    //update stage
+    let a = writeToDatabase(`${username}.stage_1`, true)
+    userdata = readDatabase(username);
+    
     //check for stages
     // @ts-ignore: Unreachable code error
     if (!userdata.stage_1) return res.status(500).json({ "error": "0xUS06x" })
@@ -42,18 +53,11 @@ export default async function StageOne(req: NextApiRequest, res: NextApiResponse
     // @ts-ignore: Unreachable code error
     if (userdata.stage_final) return res.status(500).json({ "error": "0xUS06z" })
 
-
-    //read the tag
-    // @ts-ignore: Unreachable code error
-    let bcrypt_response = await checkHash(`${userdata.username}-${userdata.string}`, tag)
-    if (!bcrypt_response) return res.status(500).json({ "error": "0xBC78s" })
-
     //the request seems to be genuine
     //regenrate strings
     let newstring = random(32)
 
     let b = writeToDatabase(`${username}.string`, newstring)
-    let a = writeToDatabase(`${username}.stage_1`, true)
     if (!b || !a) return res.status(500).json({ "error": "Error code: 0xDBW936" })
 
 

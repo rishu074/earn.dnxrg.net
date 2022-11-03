@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { writeToDatabase, readDatabase, checkHash, } from '../../../helpers'
+import { readDatabase, checkHash, } from '../../../helpers'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import axios from 'axios';
 import { useRouter } from "next/router"

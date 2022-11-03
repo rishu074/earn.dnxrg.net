@@ -39,6 +39,11 @@ export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse
     let bcrypt_response = await checkHash(`${userdata.username}-${userdata.string}`, tag)
     if (!bcrypt_response) return res.status(500).json({ "error": "0xBC78s" })
 
+    //update the details
+    let a = writeToDatabase(`${username}.stage_2`, true)
+    if (!a) return res.status(500).json({ "error": "Error code: 0xDBW557" })
+    userdata = readDatabase(username);
+
     //check for stages
     // @ts-ignore: Unreachable code error
     if (!userdata.stage_1) return res.status(500).json({ "error": "0xUS06x" })
@@ -79,8 +84,7 @@ export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse
 
     //get the linkvertise Link
     let lv = linkvertise(parseInt(keysstring), newLink)
-    let a = writeToDatabase(`${username}.stage_2`, true)
-    if (!a) return res.status(500).json({ "error": "Error code: 0xDBW557" })
+    
 
 
 
