@@ -53,7 +53,8 @@ export default async function StageOne(req: NextApiRequest, res: NextApiResponse
     let newstring = random(32)
 
     let b = writeToDatabase(`${username}.string`, newstring)
-    if (!b) return res.status(500).json({ "error": "Error code: 0xDBW936" })
+    let a = writeToDatabase(`${username}.stage_1`, true)
+    if (!b || !a) return res.status(500).json({ "error": "Error code: 0xDBW936" })
 
 
     //generate new url

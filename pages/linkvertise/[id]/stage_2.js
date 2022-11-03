@@ -188,16 +188,16 @@ export async function getServerSideProps(context) {
     //         break;
     // }
 
-    let a = await writeToDatabase(`${id}.stage_2`, true)
+    // let a = await writeToDatabase(`${id}.stage_2`, true)
     // let a = true
-    if (!a) {
-        return {
-            redirect: {
-                permanent: false, destination: '/',
-                status: 409
-            }
-        }
-    }
+    // if (!a) {
+    //     return {
+    //         redirect: {
+    //             permanent: false, destination: '/',
+    //             status: 409
+    //         }
+    //     }
+    // }
 
     return {
         props: {

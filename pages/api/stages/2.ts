@@ -79,6 +79,10 @@ export default async function Stagetwo(req: NextApiRequest, res: NextApiResponse
 
     //get the linkvertise Link
     let lv = linkvertise(parseInt(keysstring), newLink)
+    let a = writeToDatabase(`${username}.stage_2`, true)
+    if (!a) return res.status(500).json({ "error": "Error code: 0xDBW557" })
+
+
 
     // @ts-ignore: Unreachable code error
     return res.status(200).json({
